@@ -6,7 +6,7 @@ from ultralytics import YOLO
 
 app = FastAPI(title="Facial Mark Detection API")
 
-# React Frontend එක සමඟ සම්බන්ධ වීමට CORS අනිවාර්යයි
+# React Frontend 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. Models දෙකම Load කරගැනීම (YOLOv8 සහ YOLOv11)
+# 1. lodad the YOLO models
 model1 = YOLO("best_model1.pt")  # YOLOv8
 model2 = YOLO("best_model2.pt")  # YOLOv11
 
