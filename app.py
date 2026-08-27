@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Models load කිරීම (root folder එකේ තියෙන නිසා direct filenames භාවිත කර ඇත)
+# load the YOLO
 model1 = YOLO("best_model1.pt")  # YOLOv8
 model2 = YOLO("best_model2.pt")  # YOLOv11
 
@@ -24,7 +24,7 @@ def home():
     return {"message": "Facial Mark Detection Dual-Model API is Running"}
 
 
-# Helper function: Model එකකින් Detection Results ලබාගන්නා logic එක
+# Helper function
 def run_prediction(model, image):
     results = model.predict(image, conf=0.25)
     detections = []
@@ -37,7 +37,7 @@ def run_prediction(model, image):
     return detections
 
 
-# 1. Combined Endpoint (එකම Request එකෙන් Models 2කේම Output එක ගන්න)
+# 1. Combined Endpoint 
 @app.post("/predict/both")
 async def predict_both(file: UploadFile = File(...)):
     image_bytes = await file.read()
