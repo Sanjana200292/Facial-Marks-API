@@ -14,17 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Hugging Face Direct Links
-# ⚠️ වැදගත්: 'your-hf-username' වෙනුවට ඔයාගේ Hugging Face Username එක යොදන්න!
-HF_USERNAME = "your-hf-username" 
-REPO_NAME = "facial-mark-detection-models"
-
-MODEL1_URL = f"https://huggingface.co/{HF_USERNAME}/{REPO_NAME}/resolve/main/best_model1.pt"
-MODEL2_URL = f"https://huggingface.co/{HF_USERNAME}/{REPO_NAME}/resolve/main/best_model2.pt"
-
-# Server එක Run වෙද්දී Hugging Face එකෙන් Models auto-load වේ
-model1 = YOLO(MODEL1_URL)  # YOLOv8
-model2 = YOLO(MODEL2_URL)  # YOLOv11
+# Root Folder එකේ තියෙන Local Models direct load කිරීම
+model1 = YOLO("best_model1.pt")  # YOLOv8
+model2 = YOLO("best_model2.pt")  # YOLOv11
 
 
 @app.get("/")
