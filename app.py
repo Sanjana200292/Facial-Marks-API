@@ -6,7 +6,6 @@ from ultralytics import YOLO
 
 app = FastAPI(title="Facial Mark Detection API")
 
-# React Frontend 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,9 +14,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. lodad the YOLO models
-model1 = YOLO("best_model1.pt")  # YOLOv8
-model2 = YOLO("best_model2.pt")  # YOLOv11
+# Hugging Face Direct Download Links (ඔයාගේ Username එක හරියටම යොදන්න)
+HF_USERNAME = "your-hf-username"  # <-- මෙතනට ඔයාගේ Hugging Face Username එක දාන්න
+REPO_NAME = "facial-mark-detection-models"
+
+MODEL1_URL = f"https://huggingface.co/{HF_USERNAME}/{REPO_NAME}/resolve/main/best_model1.pt"
+MODEL2_URL = f"https://huggingface.co/{HF_USERNAME}/{REPO_NAME}/resolve/main/best_model2.pt"
+
+# Server එක Start වෙද්දී Models Auto-Download වී Memory එකට Load වේ
+model1 = YOLO(MODEL1_URL)  # YOLOv8
+model2 = YOLO(MODEL2_URL)  # YOLOv11
 
 
 @app.get("/")
@@ -25,7 +31,7 @@ def home():
     return {"message": "Facial Mark Detection Dual-Model API is Running"}
 
 
-# 2. Endpoint for Model 1 (YOLOv8)
+# Endpoint for Model 1 (YOLOv8)
 @app.post("/predict/model1")
 async def predict_model1(file: UploadFile = File(...)):
     image_bytes = await file.read()
@@ -49,7 +55,7 @@ async def predict_model1(file: UploadFile = File(...)):
     }
 
 
-# 3. Endpoint for Model 2 (YOLOv11)
+# Endpoint for Model 2 (YOLOv11)
 @app.post("/predict/model2")
 async def predict_model2(file: UploadFile = File(...)):
     image_bytes = await file.read()
