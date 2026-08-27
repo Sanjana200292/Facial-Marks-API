@@ -6,7 +6,7 @@ from ultralytics import YOLO
 
 app = FastAPI(title="Facial Mark Detection API")
 
-# Enable CORS for React Frontend Access
+# React Frontend එක සමඟ සම්බන්ධ වීමට CORS අනිවාර්යයි
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,17 +15,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load both YOLO models into memory
-model1 = YOLO("best_model1.pt")
-model2 = YOLO("best_model2.pt")
+# 1. Models දෙකම Load කරගැනීම (YOLOv8 සහ YOLOv11)
+model1 = YOLO("best_model1.pt")  # YOLOv8
+model2 = YOLO("best_model2.pt")  # YOLOv11
 
 
 @app.get("/")
 def home():
-    return {"message": "Facial Mark Detection Dual-Model API is Running on Hugging Face"}
+    return {"message": "Facial Mark Detection Dual-Model API is Running"}
 
 
-# Endpoint for Model 1
+# 2. Endpoint for Model 1 (YOLOv8)
 @app.post("/predict/model1")
 async def predict_model1(file: UploadFile = File(...)):
     image_bytes = await file.read()
@@ -43,13 +43,13 @@ async def predict_model1(file: UploadFile = File(...)):
 
     return {
         "status": "success",
-        "model_used": "Model 1",
+        "model_used": "YOLOv8",
         "total_marks": len(detections),
         "detections": detections,
     }
 
 
-# Endpoint for Model 2
+# 3. Endpoint for Model 2 (YOLOv11)
 @app.post("/predict/model2")
 async def predict_model2(file: UploadFile = File(...)):
     image_bytes = await file.read()
@@ -67,7 +67,7 @@ async def predict_model2(file: UploadFile = File(...)):
 
     return {
         "status": "success",
-        "model_used": "Model 2",
+        "model_used": "YOLOv11",
         "total_marks": len(detections),
         "detections": detections,
     }
